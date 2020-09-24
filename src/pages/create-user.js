@@ -24,7 +24,7 @@ const CreateUser = (props) => {
       },
     })
       .then(() => {
-        updateProfile();
+        updateProfile(userName);
       })
       .catch((e) => console.log(e));
   };

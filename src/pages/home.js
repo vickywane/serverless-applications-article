@@ -73,9 +73,10 @@ function App() {
           </div>
         ) : (
           <CreateUser
-            updateProfile={() => {
+            updateProfile={(username) => {
               getUser();
               setLoggedIn(true);
+              setuserName(username)
               beginCreatingAccount(false);
             }}
           />
