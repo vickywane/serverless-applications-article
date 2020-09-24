@@ -1,5 +1,5 @@
-import React, { useState, useCallback, useEffect } from "react";
-import { useMutation, useLazyQuery } from "@apollo/react-hooks";
+import React, { useState, useCallback } from "react";
+import { useMutation } from "@apollo/react-hooks";
 import { useDropzone } from "react-dropzone";
 
 import "../App.css";
@@ -8,9 +8,6 @@ import { CREATE_USER, GET_USER } from "../data";
 const CreateUser = (props) => {
   const { updateProfile } = props;
   const [createAccount, { loading }] = useMutation(CREATE_USER);
-
-  // state used to switch between a Guest and a user
-  const [isLoggedIn, setLoggedIn] = useState(false);
 
   // user data stored in state and passed to GraphQL
   const [userName, setuserName] = useState("");

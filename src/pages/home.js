@@ -18,15 +18,11 @@ function App() {
   const [userName, setuserName] = useState("");
   const [imgUri, setImgUri] = useState(null);
 
-  // user's uploaded image kept in state and padded to GraphQL
-  const [userImage, setUserImage] = useState(null);
-
   // deleteAccount function which deletes the user's account in our Backend Service
   const deleteAnAccount = () => {
     deleteUser()
       .then(() => {
         // resets all stored state
-        setUserImage(null);
         setLoggedIn(false);
         setImgUri(null);
         setuserName("");
@@ -37,7 +33,6 @@ function App() {
   useEffect(() => {
     if (isLoggedIn && data !== undefined) {
       setImgUri(data.getUser[0].imageuri);
-      setUserImage(data.getUser[0].username);
     }
   }, [data]);
 
