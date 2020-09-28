@@ -3,17 +3,15 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import Home from "./pages/home";
 import * as serviceWorker from "./serviceWorker";
-
-import { Config } from "./config";
-import { ApolloProvider } from "@apollo/react-hooks";
+import { UserContext, userState } from "./state/";
 
 ReactDOM.render(
-    <React.StrictMode>
-        <ApolloProvider client={Config}>
-            <Home />
-        </ApolloProvider>
-    </React.StrictMode>,
-    document.getElementById("root")
+  <React.StrictMode>
+    <UserContext.Provider value={userState}>
+      <Home />
+    </UserContext.Provider>
+  </React.StrictMode>,
+  document.getElementById("root")
 );
 
 // If you want your app to work offline and load faster, you can change
