@@ -10,8 +10,12 @@ const ApplicationState = {
 };
 
 export const UserReducer = async (action, state) => {
-  switch (applicationCache.type) {
+  console.log(action.type);
+
+  switch (action.type) {
     case "CREATE_USER":
+      console.log(action);
+
       break;
     case "CREATE_ITEM":
       break;

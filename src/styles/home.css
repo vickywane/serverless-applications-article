@@ -1,0 +1,57 @@
+.body {
+  background-color: #141821;
+}
+
+.title {
+  text-align: center;
+  color: #141821;
+}
+
+.collection-header {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid grey;
+}
+
+.collection-name {
+  color: #141821;
+}
+
+.home-body {
+  padding: 1rem 2rem;
+}
+
+.list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
+  grid-gap: 1rem 1rem;
+}
+
+.item {
+  text-align: center;
+  height: 25vh;
+  width: 20rem;
+  background-color: #141821;
+  border-radius: 5px;
+  color: #fff;
+}
+
+.alert {
+  width: 60%;
+  height: 60px;
+  background-color: green;
+  color: #fff;
+  border-radius: 0 0 8px 8px;
+}
+
+.alert-ctn {
+  display: flex;
+  justify-content: center;
+}
+
+.watch {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
