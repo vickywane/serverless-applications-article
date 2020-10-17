@@ -47,6 +47,10 @@ button {
   border: 1px solid black;
 }
 
+button:hover {
+  cursor: pointer;
+}
+
 .options {
   display: flex;
   flex-direction: column;

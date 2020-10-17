@@ -8,16 +8,17 @@ const center = {
   display: "flex",
   justifyContent: "center",
 };
-const CreateAccount = () => {
+
+const Login = () => {
   const [userEmail, setuserEmail] = useState("");
   const [userPassword, setuserPassword] = useState("");
 
   const [state, dispatch] = useReducer(UserReducer, userState);
-
+  console.log(state);
   return (
     <div className="body" style={{ height: window.innerHeight }}>
       <div className="card">
-        <h2> Create Account </h2>
+        <h2> {state.isLoading ? "Please Wait ..." : "Account Login"} </h2>
         <hr style={{ backgroundColor: "white", width: "100%" }} />
 
         <br />
@@ -50,18 +51,19 @@ const CreateAccount = () => {
 
         <br />
         <br />
-        <div
-          onClick={() => {
-            console.log("logging");
-            dispatch({
-              type: "LOGIN-USER",
-                  userEmail,
-              userPassword,
-            });
-          }}
-          style={{ ...center }}
-        >
-          <button>Create Account</button>
+        <div style={{ ...center }}>
+          <button
+            onClick={() =>
+              dispatch({
+                type: "LOGIN-USER",
+                email: userEmail,
+                password: userPassword,
+              })
+            }
+            disabled={state.isLoading}
+          >
+            Login
+          </button>
         </div>
         <br />
         <br />
@@ -71,7 +73,7 @@ const CreateAccount = () => {
           <div className="options">
             <p> Don't have an account </p>
 
-            <Link to="/login">
+            <Link to="/create-account">
               <p
                 style={{
                   color: "#fff",
@@ -80,7 +82,7 @@ const CreateAccount = () => {
                   textAlign: "center",
                 }}
               >
-                Login Here{" "}
+                Create Account
               </p>
             </Link>
           </div>
@@ -90,4 +92,4 @@ const CreateAccount = () => {
   );
 };
 
-export default CreateAccount;
+export default Login;
