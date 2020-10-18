@@ -1,10 +1,10 @@
 .switch {
-margin : 1rem 0;
+  margin: 1rem 0;
   display: flex;
   align-items: center;
-  width : 25rem;
-  border : 2px solid #000;
-  border-radius : 3px;
+  width: 27rem;
+  border: 0;
+  border-radius: 5px;
   background-color: #fff;
   justify-content: space-between;
 }
@@ -15,14 +15,17 @@ margin : 1rem 0;
   align-items: center;
   justify-content: center;
   border-radius: 0;
-  width : auto;
-  outline : 0;
-  display : flex;
-  flex : 1;
+  width: auto;
+  font-weight: 0.9rem;
+  border: 0;
+  outline: 0;
+  height: 40px;
+  display: flex;
+  flex: 1;
 }
 
 .switch-btn:hover {
-  background-color: aqua;
+  background-color: rgb(71, 99, 162);
 }
 
 .body {
@@ -37,7 +40,8 @@ margin : 1rem 0;
 .collection-header {
   display: flex;
   justify-content: space-between;
-  border-bottom: 1px solid grey;
+  margin: .2rem 0;
+  border-bottom: 1px solid #c0c0c0;
 }
 
 .collection-name {
@@ -51,20 +55,32 @@ margin : 1rem 0;
 .list {
   list-style: none;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
   grid-gap: 1rem 1rem;
 }
 
 .item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
   height: 25vh;
   width: 20rem;
   background-color: #141821;
-  border-radius: 5px;
+  border-radius: 15px;
   color: #fff;
 }
 
+.background-card-image {
+  background-image: url("../assets/images/2.jpg");
+  height: 200px;
+  width: 200px;
+  object-fit: contain;
+}
+
 .alert {
+  transition: all 400ms;
+  position: absolute;
   width: 60%;
   height: 60px;
   background-color: green;
