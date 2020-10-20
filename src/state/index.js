@@ -30,7 +30,7 @@ export const UserReducer = (state, action) => {
 
       Axios.post(`${FIRESTORE_FUNCTION}`, data)
         .then((res) => {
-          navigate("/home");
+          // navigate("/home");
           return { ...state, isLoggedIn: true };
         })
         .catch((e) => console.log(`couldnt create user. error : ${e}`));
