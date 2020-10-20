@@ -12,8 +12,9 @@ export const userState = {
   error: "",
 };
 
-const ApplicationState = {
+export const ApplicationState = {
   users: [],
+  isCreatingCollection: false,
 };
 
 export const UserReducer = (state, action) => {
@@ -69,4 +70,19 @@ export const UserReducer = (state, action) => {
   }
 };
 
+export const ApplicationReducer = (state, action) => {
+  switch (action) {
+    case "CREATE-COLLECTION":
+      return { ...ApplicationState, isCreatingCollection: true };
+
+    case "SUBMIT-COLLECTION":
+      break;
+    case "WATCH-COLLECTION":
+      break;
+    default:
+      break;
+  }
+};
+
 export const UserContext = createContext(userState);
+export const ApplicationContext = createContext(ApplicationState);

@@ -1,10 +1,12 @@
 import React, { useReducer, useEffect, useState } from "react";
-import { IoMdEye } from "react-icons/io";
+import { IoMdEye, IoMdPerson } from "react-icons/io";
 
 import Header from "../components/header";
 import Footer from "../components/footer";
 import { UserReducer, userState } from "../state/index";
 import "../styles/home.css";
+import CreateCollection from "./create-collection";
+import { Modal } from "react-bootstrap";
 
 const Data = [
   {
@@ -21,20 +23,22 @@ const Data = [
   },
 ];
 
+const users = ["Victory", "David"];
+
 const Home = () => {
   const [state, dispatch] = useReducer(UserReducer, userState);
+  const [ModalVisibility, setModalVisibility] = useState(false);
   const [isWatching, beginWatching] = useState(false);
+  const [watchedUser, setWatchedUser] = useState("");
   const [activeView, setActiveView] = useState("All Collections");
 
   useEffect(() => {
- 
-  }, []);
-
-  if (isWatching) {
-    setTimeout(() => {
-      beginWatching(false);
-    }, 2000);
-  }
+    if (isWatching) {
+      setTimeout(() => {
+        beginWatching(false);
+      }, 2000);
+    }
+  }, [isWatching]);
 
   return (
     <div>
@@ -44,16 +48,27 @@ const Home = () => {
           <div className="alert-ctn">
             <div className="alert">
               <p style={{ textAlign: "center" }} className="text">
-                You have started watching USER's collection.
+                You have started watching {`${watchedUser}'s`} collection.
               </p>
             </div>
           </div>
         )}
 
-        <div style-={{ display: "flex", flexDirection : "row" ,  justifyContent: "space-between" }}>
-          <div>
-            <h3 className="title"> {activeView} </h3>
-          </div>
+        <Modal
+          show={state.isCreatingCollection}
+          onHide={() => setModalVisibility(false)}
+          size="lg"
+        >
+          <CreateCollection closeModal={() => setModalVisibility(false)} />
+        </Modal>
+
+        <div
+          style-={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}
+        >
           <div
             style={{
               display: "flex",
@@ -85,37 +100,59 @@ const Home = () => {
           </div>
         </div>
 
-        <div className="home-body">
-          <div className="collection-header">
-            <h3 className="collection-name"> Victory's Collections </h3>
+        <div>
+          {users.map((user) => (
+            <div className="home-body">
+              <div className="collection-header">
+                <div style={{ display: "flex" }}>
+                  <span style={{ margin: "0 .5rem" }}>
+                    <IoMdPerson style={{ fontSize: "1.4rem" }} />{" "}
+                  </span>
 
-            <button onClick={() => beginWatching(true)} className="watch">
-              <div style={{ margin: ".0  .5rem" }}>
-                <IoMdEye style={{ fontSize: "1.4rem" }} />{" "}
-              </div>{" "}
-              Watch Collection
-            </button>
-          </div>
+                  <h3 style={{ margin: "0" }} className="collection-name">
+                    {" "}
+                    {`${user}'s`} Collections{" "}
+                  </h3>
+                </div>
 
-          <ul className="list">
-            {Data.map(({ id, name }) => {
-              return (
-                <li key={id} className="item">
-                  <div
-                    className="background-card-image"
-                    style={{
-                      backgroundImage: `url(../assets/images/${id}.jpg)`,
-                      height: "200px",
-                      width: "200px",
-                      objectFit: "cover",
-                    }}
-                  >
-                    <h4> {name} </h4>
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
+                <button
+                  style={{ margin: ".5rem 0" }}
+                  onClick={() => {
+                    setWatchedUser(user);
+                    beginWatching(true);
+                    dispatch({
+                      type: "WATCH-COLLECTION",
+                      collectionId: "",
+                      userId: "",
+                    });
+                  }}
+                  className="watch"
+                >
+                  <div style={{ margin: ".0  .5rem" }}>
+                    <IoMdEye style={{ fontSize: "1.4rem" }} />{" "}
+                  </div>{" "}
+                  Watch Collection
+                </button>
+              </div>
+
+              <ul className="list">
+                {Data.map(({ id, name }) => {
+                  return (
+                    <li key={id} className="item">
+                      <div
+                        className="background-card-image"
+                        style={{
+                          backgroundImage: `url(../assets/images/${id}.jpg)`,
+                        }}
+                      >
+                        <h4> {name} </h4>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          ))}
         </div>
       </div>
       <Footer />
