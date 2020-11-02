@@ -52,10 +52,9 @@ const CreateAccount = () => {
         <br />
         <div
           onClick={() => {
-            console.log("logging");
             dispatch({
-              type: "LOGIN-USER",
-                  userEmail,
+              type: "CREATE_USER",
+              userEmail,
               userPassword,
             });
           }}

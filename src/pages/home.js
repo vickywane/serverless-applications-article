@@ -1,12 +1,13 @@
-import React, { useReducer, useEffect, useState } from "react";
+import React, { useReducer, useEffect, useState, useCallback } from "react";
 import { IoMdEye, IoMdPerson } from "react-icons/io";
+import { useDropzone } from "react-dropzone";
 
+import Profile from "./profile";
 import Header from "../components/header";
 import Footer from "../components/footer";
 import { UserReducer, userState } from "../state/index";
 import "../styles/home.css";
 import CreateCollection from "./create-collection";
-import { Modal } from "react-bootstrap";
 
 const Data = [
   {
@@ -21,16 +22,18 @@ const Data = [
     id: 3,
     name: "Kangaroo",
   },
+  {
+    id: 3,
+    name: "Kangaroo",
+  },
 ];
 
-const users = ["Victory", "David"];
+const users = ["Victory"];
 
 const Home = () => {
   const [state, dispatch] = useReducer(UserReducer, userState);
-  const [ModalVisibility, setModalVisibility] = useState(false);
   const [isWatching, beginWatching] = useState(false);
-  const [watchedUser, setWatchedUser] = useState("");
-  const [activeView, setActiveView] = useState("All Collections");
+  const [Image, setImage] = useState(null);
 
   useEffect(() => {
     if (isWatching) {
@@ -40,65 +43,31 @@ const Home = () => {
     }
   }, [isWatching]);
 
+  useEffect(() => {
+    dispatch({
+      type: "FETCH-APP-DATA",
+    });
+  }, []);
+
+  const onDrop = useCallback(([file]) => {
+    setImage(file);
+  }, []);
+
+  const {
+    getRootProps,
+    isDragActive,
+    isDragAccept,
+    getInputProps,
+    isDragReject,
+  } = useDropzone({
+    onDrop,
+  });
+
   return (
     <div>
       <Header />
       <div>
-        {isWatching && (
-          <div className="alert-ctn">
-            <div className="alert">
-              <p style={{ textAlign: "center" }} className="text">
-                You have started watching {`${watchedUser}'s`} collection.
-              </p>
-            </div>
-          </div>
-        )}
-
-        <Modal
-          show={state.isCreatingCollection}
-          onHide={() => setModalVisibility(false)}
-          size="lg"
-        >
-          <CreateCollection closeModal={() => setModalVisibility(false)} />
-        </Modal>
-
-        <div
-          style-={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <div className="switch">
-              <button
-                onClick={() => setActiveView("My Collections")}
-                className="switch-btn"
-                style={{
-                  background: activeView === "My Collections" && "blue",
-                }}
-              >
-                My Collections
-              </button>
-
-              <button
-                onClick={() => setActiveView("All Collections")}
-                style={{
-                  background: activeView === "All Collections" && "blue",
-                }}
-                className="switch-btn"
-              >
-                All Collections
-              </button>
-            </div>
-          </div>
-        </div>
+        <Profile dispatch={dispatch} />
 
         <div>
           {users.map((user) => (
@@ -106,32 +75,35 @@ const Home = () => {
               <div className="collection-header">
                 <div style={{ display: "flex" }}>
                   <span style={{ margin: "0 .5rem" }}>
-                    <IoMdPerson style={{ fontSize: "1.4rem" }} />{" "}
+                    <IoMdPerson style={{ fontSize: "1.4rem" }} />
                   </span>
 
                   <h3 style={{ margin: "0" }} className="collection-name">
-                    {" "}
-                    {`${user}'s`} Collections{" "}
+                    {`${user}'s`} Collections
                   </h3>
                 </div>
 
                 <button
+                  {...getRootProps({
+                    getRootProps,
+                    isDragActive,
+                    isDragAccept,
+                    getInputProps,
+                    isDragReject,
+                  })}
                   style={{ margin: ".5rem 0" }}
                   onClick={() => {
-                    setWatchedUser(user);
-                    beginWatching(true);
                     dispatch({
-                      type: "WATCH-COLLECTION",
-                      collectionId: "",
-                      userId: "",
+                      type: "FETCH-DATA",
                     });
                   }}
                   className="watch"
                 >
                   <div style={{ margin: ".0  .5rem" }}>
-                    <IoMdEye style={{ fontSize: "1.4rem" }} />{" "}
-                  </div>{" "}
-                  Watch Collection
+                    <input {...getInputProps()} />
+                    <IoMdEye style={{ fontSize: "1.4rem" }} />
+                  </div>
+                  Add Image
                 </button>
               </div>
 
@@ -155,7 +127,7 @@ const Home = () => {
           ))}
         </div>
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };

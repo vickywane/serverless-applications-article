@@ -3,11 +3,11 @@ import { navigate } from "@reach/router";
 import Axios from "axios";
 
 const FIRESTORE_FUNCTION = process.env.REACT_APP_FIRESTORE_FUNCTION;
+const UPLOAD_ENDPOINT = process.env.REACT_APP_UPLOAD_FUNCTION;
 
 export const userState = {
-  id: 0,
-  name: "",
-  isLoggedIn: false,
+  user: null,
+  isLoggedIn: true,
   isLoading: false,
   error: "",
 };
@@ -18,7 +18,6 @@ export const ApplicationState = {
 };
 
 export const UserReducer = (state, action) => {
-  console.log(action.type);
   switch (action.type) {
     case "CREATE_USER":
       const { userEmail, userPassword } = action;
@@ -29,9 +28,9 @@ export const UserReducer = (state, action) => {
         password: userPassword,
       };
 
-      Axios.post(`${FIRESTORE_FUNCTION}`, data)
+      Axios.post(FIRESTORE_FUNCTION, data)
         .then((res) => {
-          // navigate("/home");
+          navigate("/home");
           return { ...state, isLoggedIn: true };
         })
         .catch((e) => console.log(`couldnt create user. error : ${e}`));
@@ -42,47 +41,36 @@ export const UserReducer = (state, action) => {
       userState.isLoading = true;
 
       const { email, password } = action;
-      return Axios.post(`${FIRESTORE_FUNCTION}`, {
+      return Axios.post(FIRESTORE_FUNCTION, {
         email,
         password,
         type: "LOGIN-USER",
       })
         .then((response) => {
           navigate("/home");
-          return { ...state, userState: response, isLoggedIn: true };
+          return { ...userState, isLoggedIn: true };
         })
         .catch((e) => {
           console.log(e);
         });
 
-    case "CREATE_ITEM":
-      break;
-    case "SUBSCRIBE_ABULM":
-      break;
-    case "FETCH_USERS":
-      break;
+    case "UPLOAD-USER-IMAGE":
+      const { file, userId } = action;
+
+      return Axios.post(UPLOAD_ENDPOINT, { file, userId })
+        .then(() => ({ ...state }))
+        .catch((e) => console.log(e));
+
+    case "FETCH-DATA":
+      return { ...userState, isLoading: true };
+
     case "LOGOUT":
       navigate("/login");
       return { ...userState, isLoggedIn: false };
 
     default:
-      break;
-  }
-};
-
-export const ApplicationReducer = (state, action) => {
-  switch (action) {
-    case "CREATE-COLLECTION":
-      return { ...ApplicationState, isCreatingCollection: true };
-
-    case "SUBMIT-COLLECTION":
-      break;
-    case "WATCH-COLLECTION":
-      break;
-    default:
-      break;
+      return console.log(`${action.type} case not recognized`);
   }
 };
 
 export const UserContext = createContext(userState);
-export const ApplicationContext = createContext(ApplicationState);
